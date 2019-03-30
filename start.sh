@@ -23,8 +23,6 @@ if [ ! -f $CONFIGDIR/auth ]; then
         AUTHMISSING=true
 fi
 
-echo "$USERNAME:$PASSWORD:10" >> $CONFIGDIR/test
-
 if [ $AUTHMISSING ]; then
         echo "Doing initial setup."
         # Starting deluge
@@ -48,9 +46,9 @@ if [ $AUTHMISSING ]; then
         pkill deluged
 
         echo "Adding initial authentication details."
-        echo deluge:deluge:10 >>  $CONFIGDIR/auth
+        echo "$USERNAME:$PASSWORD:10" >>  $CONFIGDIR/auth
 fi
 
 echo "Starting deluged and deluge-web."
-su -s /bin/sh deluge -c 'deluged -c /config'
-su -s /bin/sh deluge -c 'deluge-web -c /config'
+su -s /bin/sh deluge -c "deluged -c $CONFIGDIR"
+su -s /bin/sh deluge -c "deluge-web -c $CONFIGDIR"

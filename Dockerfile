@@ -3,9 +3,9 @@ FROM alpine:3.9
 MAINTAINER Jose Morales <jsmsalt@gmail.com>
 
 # Environment variables.
-ENV TZ="UTC" \
-	USERNAME="deluge" \
-	PASSWORD="deluge"
+ENV TZ=UTC \
+	USERNAME=deluge \
+	PASSWORD=deluge
 
 # Setup a user.
 RUN adduser --system -u 1000 deluge
@@ -13,9 +13,9 @@ RUN adduser --system -u 1000 deluge
 # System config
 RUN echo "********** [SET LOCALTIME AND TIMEZONE] **********" \
 	&& apk add --update --no-cache \
-			tzdata \
-	&& cp "/usr/share/zoneinfo/${TZ}" /etc/localtime \
-	&& echo "${TZ}" >  /etc/timezone \
+		tzdata \
+	&& cp "/usr/share/zoneinfo/$TZ" /etc/localtime \
+	&& echo "$TZ" >  /etc/timezone \
 	&& apk del tzdata
 
 # Full installation.
@@ -41,6 +41,7 @@ VOLUME /downloads /config
 
 # Add the start script.
 ADD start.sh /start.sh
+RUN chmod +x /start.sh
 
 # Run the start script on boot.
 CMD ["/start.sh"]
