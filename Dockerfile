@@ -10,21 +10,22 @@ ENV TZ="UTC" \
 # Setup a user.
 RUN adduser --system -u 1000 deluge
 
+# System config
+RUN echo "********** [SET LOCALTIME AND TIMEZONE] **********" \
+	&& apk add --update --no-cache \
+			tzdata \
+	&& cp "/usr/share/zoneinfo/${TZ}" /etc/localtime \
+	&& echo "${TZ}" >  /etc/timezone \
+	&& apk del tzdata
+
 # Full installation.
 RUN echo "********** [INSTALL DEPENDENCIES] **********" \
 	&& echo "@testing http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
 	&& apk add --update --no-cache \
 		deluge@testing \
-		tzdata \
-	\
-	\
-	&& echo "********** [SET LOCALTIME AND TIMEZONE] **********" \
-	&& cp "/usr/share/zoneinfo/${TZ}" /etc/localtime \
-	&& echo "${TZ}" >  /etc/timezone \
 	\
 	\
 	&& echo "********** [CLEAN UP] **********" \
-	&& apk del tzdata \
 	&& rm -rf \
 		/tmp/* \
 		/var/tmp/* \
