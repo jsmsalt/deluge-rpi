@@ -23,6 +23,8 @@ if [ ! -f $CONFIGDIR/auth ]; then
         AUTHMISSING=true
 fi
 
+echo "$USERNAME:$PASSWORD:10" >> $CONFIGDIR/test
+
 if [ $AUTHMISSING ]; then
         echo "Doing initial setup."
         # Starting deluge
